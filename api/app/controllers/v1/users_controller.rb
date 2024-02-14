@@ -10,13 +10,19 @@ class V1::UsersController < ApplicationController
     begin
       payload = FirebaseAuthenticator.new(token).validate!
       @user = User.find_or_create_by(uid: payload['sub']) do |user|
-        user.nickname = payload['nickname']
+        user.nickname = user_params[:nickname]
       end
     rescue FirebaseAuthenticator::InvalidTokenError => e
       return render json: { error: e.message }, status: :unauthorized
     end
 
     render json: { status: "success", user: @user }
+  end
+
+  private
+
+  def user_params
+    params.require(:user).permit(:nickname)
   end
 
 end
