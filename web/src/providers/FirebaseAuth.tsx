@@ -12,7 +12,7 @@ const FirebaseAuthContext = createContext<User | null>(null);
 
 const useFirebaseAuthContext = () => {
   const context = useContext(FirebaseAuthContext);
-  if (!context) {
+  if (context === undefined) {
     throw new Error(
       "useFirebaseAuthContextはFirebaseAuthProviderの子要素内でのみ使用できます"
     );
